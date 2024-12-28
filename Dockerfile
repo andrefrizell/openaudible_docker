@@ -13,16 +13,18 @@ RUN apt-get update && apt-get install -y \
     wget \
     libswt-gtk-4-jni \
     vim \
+    libwebkit2gtk-4.1-dev \
+    libwebkit2gtk-4.1-0 \
     xdg-utils \
-    firefox-esr \
+    chromium \
     thunar \
     python3-xdg \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Set Firefox as the default browser
-RUN update-alternatives --set x-www-browser /usr/bin/firefox-esr && \
-    update-alternatives --set gnome-www-browser /usr/bin/firefox-esr
+RUN update-alternatives --set x-www-browser /usr/bin/chromium && \
+    update-alternatives --set gnome-www-browser /usr/bin/chromium
 
 # Download and install OpenAudible
 RUN wget -q https://openaudible.org/latest/OpenAudible_x86_64.sh?beta=false -O openaudible_installer.sh && \
@@ -37,7 +39,7 @@ RUN chown abc:abc -R /config /usr/local/OpenAudible
 
 # Create a script to set up the environment
 RUN echo '#!/bin/bash\n\
-export BROWSER=/usr/bin/firefox-esr\n\
+export BROWSER=/usr/bin/chromium\n\
 export XDG_CURRENT_DESKTOP=XFCE\n\
 exec "$@"' > /usr/local/bin/entrypoint.sh && \
     chmod +x /usr/local/bin/entrypoint.sh
